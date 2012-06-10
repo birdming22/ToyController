@@ -4,9 +4,43 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <TextView
-        android:layout_width="fill_parent"
+    <LinearLayout
+        android:id="@+id/mainPage"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/hello" />
+        android:orientation="horizontal" >
+
+        <EditText
+            android:id="@+id/editRate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+        </EditText>
+
+        <Button
+            android:id="@+id/btnSend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Send" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/controlFrame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <com.tenzenway.arduino.toy.MainView
+            android:id="@+id/myMainView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.androidplot.xy.XYPlot
+            android:id="@+id/aprHistoryPlot"
+            android:layout_width="fill_parent"
+            android:layout_height="300px"
+            android:layout_marginLeft="10px"
+            android:layout_marginRight="10px"
+            android:layout_marginTop="240px"
+            title="Time" />
+    </FrameLayout>
 
 </LinearLayout>
