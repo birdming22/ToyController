@@ -19,7 +19,7 @@ public class SerialAdapter {
 	// Unique UUID for this application
 	// has to be this precise value for SERIAL port profile (SPP)
 	private static final UUID MY_UUID = UUID
-			.fromString("00001101-0000-1000-8000-00805F9B1234");
+			.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
 	private BluetoothSocket _btSocket;
 	private InputStream _socketIS;
@@ -87,7 +87,9 @@ public class SerialAdapter {
 							// blocking on the read when there's nothing...
 							int readCount = _socketIS.read(buff);
 
-							_dataLink.readMessage(buff, readCount);
+							if (readCount > 0) {
+								_dataLink.readMessage(buff, readCount);
+							}
 						}
 					} catch (Exception e) {
 						Log.e(TAG,
