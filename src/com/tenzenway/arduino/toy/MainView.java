@@ -13,13 +13,13 @@ import android.view.MotionEvent;
 import android.view.View;
 
 public class MainView extends View {
-	private static final Point _red = new Point(50, 50);
-	private static final Point _blue = new Point(250, 50);
-	private static final Point _yellow = new Point(150, 200);
+	private static final Point _red = new Point(50, 100);
+	private static final Point _blue = new Point(250, 100);
+	private static final Point _yellow = new Point(150, 300);
 
 	private final List<JoystickListener> _joystickListeners = new ArrayList();
 
-	private Point _joystick = new Point(150, 50);
+	private Point _joystick = new Point(150, 200);
 	private final int _r = 30;
 	private boolean _move = false;
 	private long _lastMove = 0;

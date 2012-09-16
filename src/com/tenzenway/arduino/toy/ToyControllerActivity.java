@@ -11,6 +11,7 @@ import com.tenzenway.arduino.toy.MainView;
 import com.tenzenway.arduino.toy.R;
 import com.tenzenway.arduino.toy.MainView.ColValues;
 import com.tenzenway.arduino.toy.MainView.JoystickListener;
+import com.tenzenway.arduino.toy.SerialAdapter;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
@@ -34,6 +35,7 @@ public class ToyControllerActivity extends Activity {
 
 	private TextView _title;
 	private BluetoothAdapter _bluetoothAdapter;
+	private SerialAdapter _serialAdapter;
 	private boolean _connectDevice = false;
 	private SimpleXYSeries rollHistorySeries = null;
 	private LinkedList<Number> rollHistory;
@@ -41,15 +43,28 @@ public class ToyControllerActivity extends Activity {
 	private int dataCount = 0;
 
 	public boolean updateColours(int redPerc, int bluePerc, int orangePerc) {
-		byte[] bytes = new byte[1];
+		byte[] bytes = new byte[5];
+		bytes[0] = (byte)0x81;
+		bytes[1] = (byte)3;
+		int R = redPerc*256/100;
+		int G = orangePerc*256/100;
+		int B = bluePerc*256/100;
+		if (R < 0) R = 0;
+		if (G < 0) G = 0;
+		if (B < 0) B = 0;
+		if (R > 255) R = 255;
+		if (G > 255) G = 255;
+		if (B > 255) B = 255;
+		bytes[2] = (byte)R;
+		bytes[3] = (byte)G;
+		bytes[4] = (byte)B;
 
-		if (redPerc > bluePerc) {
-			bytes[0] = 'I';
+		if (_serialAdapter != null) {
+			_serialAdapter.sendBytes(bytes);
+			return true;
 		} else {
-			bytes[0] = 'O';
+			return false;
 		}
-
-		return false;
 	}
 
 	/** Called when the activity is first created. */
@@ -141,6 +156,8 @@ public class ToyControllerActivity extends Activity {
 	public void onDestroy() {
 		super.onDestroy();
 		Log.d(TAG, "++ ON DESTROY ++");
+		if (_serialAdapter != null)
+			_serialAdapter.disconnect();
 	}
 	public static final double[] forwardMagnitude(double[] input) {
 		int N = input.length;
@@ -207,6 +224,7 @@ public class ToyControllerActivity extends Activity {
 				try {
 					Log.d(TAG, "address:" + address);
 
+					_serialAdapter = new SerialAdapter(_bluetoothAdapter, address, _handler);
 					_connectDevice = true;
 				} catch (Exception e) {
 					Toast.makeText(this, "Can't connect to the SPOKA",
