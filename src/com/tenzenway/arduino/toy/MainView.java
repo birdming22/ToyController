@@ -77,7 +77,7 @@ public class MainView extends View {
 		canvas.drawCircle(_red.x, _red.y, 20, paint);
 		paint.setColor(Color.BLUE);
 		canvas.drawCircle(_blue.x, _blue.y, 20, paint);
-		paint.setColor(Color.YELLOW);
+		paint.setColor(Color.GREEN);
 		canvas.drawCircle(_yellow.x, _yellow.y, 20, paint);
 
 		// draw the moving circle (the "joystick")
